@@ -67,7 +67,7 @@ long HX711::read() {
 
     // Datasheet indicates the value is returned as a two's complement value
     // Flip all the bits
-    data[2] = ~data[2];
+    /*data[2] = ~data[2];
     data[1] = ~data[1];
     data[0] = ~data[0];
 
@@ -79,15 +79,17 @@ long HX711::read() {
     } else {
         filler = 0x00;
     }
+     */
 
     // Construct a 32-bit signed integer
-    value = ( static_cast<unsigned long>(filler) << 24
-            | static_cast<unsigned long>(data[2]) << 16
+	data[2] ^= 0x80;
+    return ( /*static_cast<unsigned long>(filler) << 24
+            | */static_cast<unsigned long>(data[2]) << 16
             | static_cast<unsigned long>(data[1]) << 8
             | static_cast<unsigned long>(data[0]) );
 
     // ... and add 1
-    return static_cast<long>(++value);
+    //return static_cast<long>(++value);
 }
 
 long HX711::read_average(byte times) {
